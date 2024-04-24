@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, Image, StyleSheet } from 'react-native'
 import HorarioSelector from '../components/HorarioSelector'
+import {DAYS} from "../data/mock-data"
 
 
 export const BlocksDetailScreen = ({ route }) => {
@@ -20,13 +21,9 @@ export const BlocksDetailScreen = ({ route }) => {
             </View>
             <View>
                 <Text style={styles.sectionContainer}>{detailInfoBlocks.endereco}</Text>
-                <HorarioSelector dia = "segunda: 12"/>
-                <HorarioSelector dia = "Terça: 13"/>
-                <HorarioSelector dia = "Quarta: 14"/>
-                <HorarioSelector dia = "Quinta: 15"/>
-                <HorarioSelector dia = "Sexta: 16"/>
-                <HorarioSelector dia = "Sábado: 17"/>
-                <HorarioSelector dia = "Domingo: 18"/>
+                {DAYS.map((day, index) => (
+                        <HorarioSelector key={index} dia={day.dia} horarios={day.horario} />
+                    ))}
             </View>
             </View>
         </ScrollView>

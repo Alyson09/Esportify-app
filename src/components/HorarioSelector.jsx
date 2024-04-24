@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Animated, StyleSheet, Text, View, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { DAYS } from "../data/mock-data";
 
-function HorarioSelector({dia}) {
+function HorarioSelector({dia, horarios}) {
   const [opened, setOpened] = useState(false);
   const [animation] = useState(new Animated.Value(0));
-  const horarios = ["13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"]
 
 
   function toggleAccordion() {
@@ -21,7 +19,7 @@ function HorarioSelector({dia}) {
 
   const heightAnimationInterpolation = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 100] 
+    outputRange: [0, horarios.length * 20] 
   });
 
   return (
@@ -35,9 +33,9 @@ function HorarioSelector({dia}) {
 
       {opened && (
         <Animated.View style={[styles.content, { height: heightAnimationInterpolation }]}>
-          {horarios.map((horario, index) => (
+            {horarios.map((horario, index) => (
             <Text key={index} style={styles.details}>{horario}</Text>
-          ))}
+            ))}
         </Animated.View>
       )}
     </View>
