@@ -2,11 +2,13 @@ class Block {
     constructor(
         id,
         title,
-        banner
+        banner,
+        endereco
     ){
         this.id = id,
         this.title = title,
-        this.banner = banner
+        this.banner = banner,
+        this.endereco= endereco
     }
 }
 

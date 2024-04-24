@@ -1,5 +1,4 @@
 import { View, Image, Text, StyleSheet, Pressable } from 'react-native'
-import { COMPANIES } from '../data/mock-data'
 import { useNavigation } from '@react-navigation/native'
 
 export const CardBlock = ({ infoBlocks }) => {
@@ -27,6 +26,9 @@ export const CardBlock = ({ infoBlocks }) => {
             </View>
             <View style={styles.textContainer}>
                 <Text style={styles.textTitle}>{infoBlocks.title}</Text>
+            </View>
+            <View>
+                <Text style={styles.textSubtitle}>{infoBlocks.endereco}</Text>
             </View>
         </Pressable>
     )

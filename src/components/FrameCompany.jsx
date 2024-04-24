@@ -29,7 +29,6 @@ export const FrameCompany = ({ detailInfoCompany }) => {
                 </View>
             </View>
         </Pressable>
-
     )
 }
 
