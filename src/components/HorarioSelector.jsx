@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Animated, StyleSheet, Text, View, Pressable } from "react-native";
+import { Animated, StyleSheet, Text, View, Pressable, Button, Alert } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-web";
 
 function HorarioSelector({dia, horarios}) {
   const [opened, setOpened] = useState(false);
@@ -34,7 +35,13 @@ function HorarioSelector({dia, horarios}) {
       {opened && (
         <Animated.View style={[styles.content, { height: heightAnimationInterpolation }]}>
             {horarios.map((horario, index) => (
-            <Text key={index} style={styles.details}>{horario}</Text>
+            <Text key={index} style={styles.details}>{horario}
+            <TouchableOpacity
+            style={styles.button}
+            onPress={()=>console.log("Quadra alugada!")}>
+            <Text>Alugar</Text>
+            </TouchableOpacity>
+            </Text>
             ))}
         </Animated.View>
       )}
@@ -63,12 +70,19 @@ const styles = StyleSheet.create({
   content: {
     marginTop: 8,
     overflow: 'hidden', 
+    flex: 1,
+    justifyContent: 'space-between',
   },
   details: {
     fontWeight: 'regular',
     opacity: 0.65,
-    height: 20, 
+    height: 20,
+    
   },
+  button:{
+    borderRadius: 3,
+    backgroundColor: '#FE2020',
+  }
 });
 
 export default HorarioSelector;

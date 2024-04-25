@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "temos-vagas",
-    "slug": "temos-vagas",
+    "name": "Aluguel de quadras",
+    "slug": "Aluguel de quadras",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
