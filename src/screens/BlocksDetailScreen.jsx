@@ -20,9 +20,9 @@ export const BlocksDetailScreen = ({ route }) => {
                 <Text style={styles.textTitle}>{detailInfoBlocks.title}</Text>
             </View>
             <View>
-                <Text style={styles.sectionContainer}>{detailInfoBlocks.endereco}</Text>
+                <Text style={styles.sectionContainer}>{detailInfoBlocks.rua}, n°{detailInfoBlocks.numero}</Text>
                 {DAYS.map((day, index) => (
-                        <HorarioSelector key={index} dia={day.dia} horarios={day.horario} />
+                        <HorarioSelector key={index} dia={day.dia} horarioInicio={day.horarioInicio}  horarioTermino={day.horarioTermino}/>
                     ))}
             </View>
             </View>

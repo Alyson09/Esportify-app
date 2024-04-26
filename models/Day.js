@@ -1,10 +1,12 @@
 class Day {
     constructor(
         dia,
-        horario
+        horarioInicio,
+        horarioTermino
     ){
         this.dia = dia,
-        this.horario = horario
+        this.horarioInicio = horarioInicio,
+        this.horarioTermino = horarioTermino
     }
 }
 

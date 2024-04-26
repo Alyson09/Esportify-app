@@ -8,25 +8,33 @@ export const BLOCKS= [
         1,
         'Goat arena',
         'https://www.tudograma.com.br/images/blog/construcao-de-quadra-de-futebol-society-e-com-a-tudo-grama/construcao-de-quadra-de-futebol-society-e-com-a-tudo-grama-1.jpg',
-        'Rua Chuva de pika, n 150'
+        'Rua Chuva de Prata',
+        150,
+        36889110
     ),
     new Block(
         2,
         'Harpa.IA Arena',
         'https://static.sportit.com.br/public/sportit/imagens/produtos/piso-modular-quadra-completa-m2-2906.jpg',
-        'Rua Rola pra cima, n 130'
+        'Rua Oswaldo Cruz',
+        130,
+        36889110
     ),
     new Block(
         3,
-        'Society',
+        'Jorlan',
         'https://www.sescpr.com.br/wp-content/uploads/2023/02/52570915440_679cb532f9_o-scaled.jpg',
-        'Rua Tão tão distante, n 209'
+        'Rua Rui Barbosa',
+        209,
+        36889110
     ),
     new Block(
         4,
         'Sicoob',
         'https://www.recreiodajuventude.com.br/userfiles/redacao/posts/quadra-areia-noticia-1.jpg',
-        'Rua Bruto mandela, n 10'
+        'Rua Universal',
+        10,
+        36889110
     )
 ]
 
@@ -51,30 +59,37 @@ export const COMPANIES = [
 export  const DAYS = [
     new Day(
         'Segunda-feira: 12',
-        ["13:00 a 14:00", "15:00 a 16:00", "17:00 a 18:00", "19:00 a 20:00"]
+        ["13:00", "15:00" , "17:00" , "19:00"],
+        ["14:00", "16:00", "18:00", "20:00"]
     ),
     new Day(
         'Terça-feira: 13',
-        ["13:00 a 14:00", "15:00 a 16:00", "17:00 a 18:00", "19:00 a 20:00"]
+        ["13:00", "15:00" , "17:00" , "19:00"],
+        ["14:00", "16:00", "18:00", "20:00"]
     ),
     new Day(
         'Quarta-feira: 14',
-        ["13:00 a 14:00", "15:00 a 16:00", "17:00 a 18:00", "19:00 a 20:00"]
+        ["13:00", "15:00" , "17:00" , "19:00"],
+        ["14:00", "16:00", "18:00", "20:00"]
     ),
     new Day(
         'Quinta-feria: 15',
-        ["13:00 a 14:00", "15:00 a 16:00", "17:00 a 18:00", "19:00 a 20:00"]
+        ["13:00", "15:00" , "17:00" , "19:00"],
+        ["14:00", "16:00", "18:00", "20:00"]
     ),
     new Day(
         'Sexta-feria: 16',
-        ["13:00 a 14:00", "15:00 a 16:00", "17:00 a 18:00", "19:00 a 20:00"]
+        ["13:00", "15:00" , "17:00" , "19:00"],
+        ["14:00", "16:00", "18:00", "20:00"]
     ),
     new Day(
         'Sábado: 17',
-        ["13:00 a 14:00", "15:00 a 16:00", "17:00 a 18:00", "19:00 a 20:00"]
+        ["13:00", "15:00" , "17:00" , "19:00"],
+        ["14:00", "16:00", "18:00", "20:00"]
     ),
     new Day(
         'Domingo: 18',
-        ["13:00 a 14:00", "15:00 a 16:00", "17:00 a 18:00", "19:00 a 20:00"]
+        ["13:00", "15:00" , "17:00" , "19:00"],
+        ["14:00", "16:00", "18:00", "20:00"]
     ),
 ] 

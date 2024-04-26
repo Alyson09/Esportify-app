@@ -28,7 +28,9 @@ export const CardBlock = ({ infoBlocks }) => {
                 <Text style={styles.textTitle}>{infoBlocks.title}</Text>
             </View>
             <View>
-                <Text style={styles.textSubtitle}>{infoBlocks.endereco}</Text>
+                <Text style={styles.textSubtitle}>{infoBlocks.rua}</Text>
+                <Text style={styles.textSubtitle}>{infoBlocks.numero}</Text>
+                <Text style={styles.textSubtitle}>{infoBlocks.cep}</Text>
             </View>
         </Pressable>
     )
@@ -73,3 +75,4 @@ const styles = StyleSheet.create({
         marginTop: 10,    
     }
 })
+
