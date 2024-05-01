@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import axios from 'axios';
 import { CardBlock } from './CardBlock';
-import { LinkBlock } from '../Linkendpoints/Links';
+
 
 export const FeedBlocks = () => {
-    const [blocks, setBlocks] = useState([]);
+    const [block, setBlocks] = useState([]);
 
     useEffect(() => {
         fetchBlocks();
@@ -13,14 +13,16 @@ export const FeedBlocks = () => {
 
     const fetchBlocks = async () => {
         try {
-            const response = await axios.get(LinkBlock);
-            setBlocks(response.data);
+            console.log('ola')
+            const res = await axios.get(`http://localhost:3000/Block`);
+            console.log(res.data)
+            setBlocks(res.data);
         } catch (error) {
-            console.error('Erro ao buscar os blocos:', error);
+            console.error('Erro ao realizar a solicitação:', error);
         }
     };
 
-    const printBlocks = blocks.map((block) => (
+    const printBlocks = block.map((block) => (
         <CardBlock
             infoBlocks={block}
             key={block.id}

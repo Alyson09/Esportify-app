@@ -3,9 +3,9 @@ import { ScrollView, View, Text, Image, StyleSheet } from 'react-native';
 import HorarioSelector from '../components/HorarioSelector';
 import axios from 'axios';
 
-export const BlocksDetailScreen = ({ route }) => {
+export const BlocksDetailScreen = () => {
     const [blockInfo, setBlockInfo] = useState(null);
-    const detailInfoBlocks = route.params.infoBlocks;
+    const [dayInfo, setDayInfo] = useState(null);
 
     useEffect(() => {
         fetchBlockInfo();
@@ -13,8 +13,17 @@ export const BlocksDetailScreen = ({ route }) => {
 
     const fetchBlockInfo = async () => {
         try {
-            const response = await axios.get(`http://localhost:4000/Block/${detailInfoBlocks.id}`);
-            setBlockInfo(response.data);
+            const res = await axios.get(`http://localhost:3000/Block`);
+            setBlockInfo(res.data);
+            await fetchDayInfo(res.data.id);
+        } catch (error) {
+            console.error('Erro ao buscar informações do bloco:', error);
+        }
+    };
+    const fetchDayInfo = async () => {
+        try {
+            const resDay = await axios.get(`http://localhost:3000/Day`);
+            setDayInfo(resDay.data);
         } catch (error) {
             console.error('Erro ao buscar informações do bloco:', error);
         }
@@ -22,7 +31,7 @@ export const BlocksDetailScreen = ({ route }) => {
 
     return (
         <ScrollView style={styles.mainContainer}>
-            {blockInfo && (
+            {blockInfo && dayInfo && (
                 <View style={styles.headerContainer}>
                     <View style={styles.bannerBlockContainer}>
                         <Image
@@ -35,7 +44,7 @@ export const BlocksDetailScreen = ({ route }) => {
                     </View>
                     <View>
                         <Text style={styles.sectionContainer}>{blockInfo.rua}, n°{blockInfo.numero}</Text>
-                        {blockInfo.days.map((day, index) => (
+                        {dayInfo.map((day, index) => (
                             <HorarioSelector key={index} dia={day.dia} horarios={day.horarios} />
                         ))}
                     </View>
@@ -44,6 +53,7 @@ export const BlocksDetailScreen = ({ route }) => {
         </ScrollView>
     );
 };
+
 const styles = StyleSheet.create({
     mainContainer: {
         padding: 5,
