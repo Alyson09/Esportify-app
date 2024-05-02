@@ -22,14 +22,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.joaolucasgomess.temosvagas"
+      "package": ""
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "292a01d6-2e00-4b92-833b-72d20ea6cfab"
+        "projectId": ""
       }
     }
   }

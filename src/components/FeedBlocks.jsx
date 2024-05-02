@@ -13,7 +13,6 @@ export const FeedBlocks = () => {
 
     const fetchBlocks = async () => {
         try {
-            console.log('ola')
             const res = await axios.get(`http://localhost:3000/Block`);
             console.log(res.data)
             setBlocks(res.data);

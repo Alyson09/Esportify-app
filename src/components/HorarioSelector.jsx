@@ -2,56 +2,53 @@ import React, { useState } from "react";
 import { Animated, StyleSheet, Text, View, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-function HorarioSelector({ dia, horarios }) {
-    const [opened, setOpened] = useState(false);
-    const [animation] = useState(new Animated.Value(0));
+function HorarioSelector({ dia, horarioInicio, horarioTermino }) {
+  const [opened, setOpened] = useState(false);
+  const [animation] = useState(new Animated.Value(0));
 
-    function toggleAccordion() {
-        const toValue = opened ? 0 : 1;
-        Animated.timing(animation, {
-            toValue,
-            duration: 100,
-            useNativeDriver: false
-        }).start();
-        setOpened(!opened);
-    }
+  function toggleAccordion() {
+    const toValue = opened ? 0 : 1;
+    Animated.timing(animation, {
+      toValue,
+      duration: 100,
+      useNativeDriver: false
+    }).start();
+    setOpened(!opened);
+  }
 
-    const heightAnimationInterpolation = animation.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, 180]
-    });
+  const heightAnimationInterpolation = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 180]
+  });
 
-    return (
-        <View style={styles.container}>
-            <Pressable onPress={toggleAccordion}>
-                <View style={styles.header}>
-                    <Text style={styles.details}>{dia}</Text>
-                    <AntDesign name={opened ? 'caretup' : 'caretdown'} size={16} />
-                </View>
-            </Pressable>
-
-            {opened && (
-                <Animated.View style={[styles.content, { height: heightAnimationInterpolation }]}>
-                    {horarios.map((horario, index) => (
-                        <View key={index} style={styles.timeContainer}>
-                            <Text style={styles.details}>
-                                {horario.inicio} a {horario.termino}
-                            </Text>
-                            <Pressable
-                                style={styles.button}
-                                onPress={() => console.log("Quadra alugada!")}
-                            >
-                                <Text style={styles.buttonText}>Alugar</Text>
-                            </Pressable>
-                        </View>
-                    ))}
-                </Animated.View>
-            )}
+  return (
+    <View style={styles.container}>
+      <Pressable onPress={toggleAccordion}>
+        <View style={styles.header}>
+          <Text style={styles.details}>{dia}</Text>
+          <AntDesign name={opened ? 'caretup' : 'caretdown'} size={16} />
         </View>
-    );
+      </Pressable>
+
+      {opened && (
+        <Animated.View style={[styles.content, { height: heightAnimationInterpolation }]}>
+          {horarioInicio.map((inicio, index) => (
+            <View key={index} style={styles.timeContainer}>
+              <Text style={styles.details}>
+                {inicio} a {horarioTermino[index]}
+              </Text>
+              <Pressable
+                style={styles.button}
+                onPress={() => console.log("Quadra alugada!")}>
+                <Text style={styles.buttonText}>Solicitar</Text>
+              </Pressable>
+            </View>
+          ))}
+        </Animated.View>
+      )}
+    </View>
+  );
 }
-
-
 
 
 const styles = StyleSheet.create({
@@ -94,4 +91,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   }
 });
+
+
 export default HorarioSelector;

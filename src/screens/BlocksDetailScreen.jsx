@@ -43,9 +43,9 @@ export const BlocksDetailScreen = () => {
                         <Text style={styles.textTitle}>{blockInfo.title}</Text>
                     </View>
                     <View>
-                        <Text style={styles.sectionContainer}>{blockInfo.rua}, n°{blockInfo.numero}</Text>
+                        <Text style={styles.sectionContainer}>{blockInfo.rua}, n° {blockInfo.numero}</Text>
                         {dayInfo.map((day, index) => (
-                            <HorarioSelector key={index} dia={day.dia} horarios={day.horarios} />
+                            <HorarioSelector key={index} dia={day.dia} horarioInicio={day.horarioInicio} horarioTermino={day.horarioTermino} />
                         ))}
                     </View>
                 </View>
