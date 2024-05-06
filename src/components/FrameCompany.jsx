@@ -1,36 +1,56 @@
-import { View, Text, Image, StyleSheet, Pressable } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
+import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
-export const FrameCompany = ({ detailInfoCompany }) => {
-    
-    const navigation = useNavigation()
- 
+export const FrameCompany = ({ companyId }) => {
+    const [companyInfo, setCompanyInfo] = useState(null);
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        fetchCompanyInfo();
+    }, []);
+
+    const fetchCompanyInfo = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3000/Company/${companyId}`);
+            setCompanyInfo(response.data);
+        } catch (error) {
+            console.error('Erro ao buscar informações da empresa:', error);
+        }
+    };
+
     const goToDetailPageCompany = () => {
         navigation.navigate('CompanyDetailScreen', {
-            infoCompany: detailInfoCompany
-        })
+            infoCompany: companyInfo
+        });
+    };
+
+    if (!companyInfo) {
+        return null; 
     }
 
-    return(
-        <Pressable 
+    return (
+        <Pressable
             style={styles.infoCopanyContainer}
-            android_ripple={{ color: '#00000088"' }}
+            android_ripple={{ color: '#00000088' }}
             onPress={goToDetailPageCompany}
         >
             <View style={styles.bannerAndTextContainer}>
                 <View style={styles.bannerCompanyContainer}>
                     <Image
-                        source={{ uri: detailInfoCompany.banner }}
+                        source={{ uri: companyInfo.banner }}
                         style={styles.image}
                     />
                 </View>
                 <View style={styles.textContainer}>
-                    <Text style={styles.textSubtitle}>{detailInfoCompany.name}</Text>
+                    <Text style={styles.textSubtitle}>{companyInfo.name}</Text>
                 </View>
             </View>
         </Pressable>
-    )
-}
+    );
+};
+
 
 const styles = StyleSheet.create({
     infoCopanyContainer: {
@@ -67,4 +87,3 @@ const styles = StyleSheet.create({
         width: 70,
     }
 });
-

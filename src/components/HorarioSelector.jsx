@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Animated, StyleSheet, Text, View, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-
 function HorarioSelector({ dia, horarioInicio, horarioTermino }) {
   const [opened, setOpened] = useState(false);
   const [animation] = useState(new Animated.Value(0));
@@ -41,7 +40,7 @@ function HorarioSelector({ dia, horarioInicio, horarioTermino }) {
               <Pressable
                 style={styles.button}
                 onPress={() => console.log("Quadra alugada!")}>
-                <Text style={styles.buttonText}>Alugar</Text>
+                <Text style={styles.buttonText}>Solicitar</Text>
               </Pressable>
             </View>
           ))}
@@ -50,6 +49,7 @@ function HorarioSelector({ dia, horarioInicio, horarioTermino }) {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -82,12 +82,12 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 3,
-    backgroundColor: '#06af06',
+    backgroundColor: '#24f024',
     paddingHorizontal: 10,
     paddingVertical: 6,
   },
   buttonText: {
-    color: 'white',
+    color: 'black',
     fontWeight: 'bold',
   }
 });

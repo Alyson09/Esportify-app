@@ -1,34 +1,60 @@
-import { View, Text, ScrollView, Image, StyleSheet } from 'react-native'
-import HorarioSelector from '../components/HorarioSelector'
-import {DAYS} from "../data/mock-data"
+import React, { useState, useEffect } from 'react';
+import { ScrollView, View, Text, Image, StyleSheet } from 'react-native';
+import HorarioSelector from '../components/HorarioSelector';
+import axios from 'axios';
 
+export const BlocksDetailScreen = () => {
+    const [blockInfo, setBlockInfo] = useState(null);
+    const [dayInfo, setDayInfo] = useState(null);
 
-export const BlocksDetailScreen = ({ route }) => {
+    useEffect(() => {
+        fetchBlockInfo();
+    }, []);
 
-    const detailInfoBlocks = route.params.infoBlocks
+    const fetchBlockInfo = async () => {
+        try {
+            const res = await axios.get(`https://espority-backend.onrender.com/quadra`);
+            console.log(res.data)
+            setBlockInfo(res.data);
+            await fetchDayInfo(res.data.id);
+        } catch (error) {
+            console.error('Erro ao buscar informações do bloco:', error);
+        }
+    };
+    const fetchDayInfo = async () => {
+        try {
+            const resDay = await axios.get(`https://espority-backend.onrender.com/dias_semana`);
+            // https://espority-backend.onrender.com/horarios_aluguel endpoit de horarios
+            setDayInfo(resDay.data);
+        } catch (error) {
+            console.error('Erro ao buscar informações do bloco:', error);
+        }
+    };
 
     return (
         <ScrollView style={styles.mainContainer}>
-            <View style={styles.headerContainer}>
-                <View style={styles.bannerBlockContainer}>
-                    <Image
-                        source={{ uri: detailInfoBlocks.banner }}
-                        style={styles.image}
-                    />
+            {blockInfo && dayInfo && (
+                <View style={styles.headerContainer}>
+                    <View style={styles.bannerBlockContainer}>
+                        <Image
+                            source={{ uri: blockInfo.banner }}
+                            style={styles.image}
+                        />
+                    </View>
+                    <View style={styles.textContainer}>
+                        <Text style={styles.textTitle}>{blockInfo.title}</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.sectionContainer}>{blockInfo.rua}, n° {blockInfo.numero}</Text>
+                        {dayInfo.map((day, index) => (
+                            <HorarioSelector key={index} dia={day.dia} horarioInicio={day.horarioInicio} horarioTermino={day.horarioTermino} />
+                        ))}
+                    </View>
                 </View>
-            <View style={styles.textContainer}>
-                <Text style={styles.textTitle}>{detailInfoBlocks.title}</Text>
-            </View>
-            <View>
-                <Text style={styles.sectionContainer}>{detailInfoBlocks.rua}, n°{detailInfoBlocks.numero}</Text>
-                {DAYS.map((day, index) => (
-                        <HorarioSelector key={index} dia={day.dia} horarioInicio={day.horarioInicio}  horarioTermino={day.horarioTermino}/>
-                    ))}
-            </View>
-            </View>
+            )}
         </ScrollView>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     mainContainer: {
