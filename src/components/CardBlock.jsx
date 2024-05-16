@@ -20,17 +20,16 @@ export const CardBlock = ({ infoBlocks }) => {
         >
             <View style={styles.imageContainer}>
                 <Image
-                    source={{ uri: infoBlocks.banner }}
+                    source={{ uri: "https://i.imgur.com/0mpg3sp.jpeg" }}
                     style={styles.image}
                 />
             </View>
             <View style={styles.textContainer}>
-                <Text style={styles.textTitle}>{infoBlocks.title}</Text>
+                <Text style={styles.textTitle}>{infoBlocks.nome}</Text>
+                <Text style={styles.textTitle}>{infoBlocks.id}</Text>
+            
             </View>
             <View>
-                <Text style={styles.textSubtitle}>{infoBlocks.rua}</Text>
-                <Text style={styles.textSubtitle}>{infoBlocks.numero}</Text>
-                <Text style={styles.textSubtitle}>{infoBlocks.cep}</Text>
             </View>
         </Pressable>
     );

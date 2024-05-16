@@ -13,7 +13,7 @@ export const FrameCompany = ({ companyId }) => {
 
     const fetchCompanyInfo = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/Company/${companyId}`);
+            const response = await axios.get(`http://localhost:3000/Company`);
             setCompanyInfo(response.data);
         } catch (error) {
             console.error('Erro ao buscar informações da empresa:', error);
