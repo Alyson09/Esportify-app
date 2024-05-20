@@ -1,57 +1,63 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Image, StyleSheet } from 'react-native';
-//import HorarioSelector from '../components/HorarioSelector';
+import { useRoute } from '@react-navigation/native';
+import HorarioSelector from '../components/HorarioSelector';
 import axios from 'axios';
 
 export const BlocksDetailScreen = () => {
-    const [blockInfo, setBlockInfo] = useState(null);
-    //const [dayInfo, setDayInfo] = useState(null);
+    const route = useRoute();
+    const { infoBlocks } = route.params;
+    const [dayInfo, setDayInfo] = useState([]);
 
     useEffect(() => {
-        fetchBlockInfo();
+        fetchBlocks();
     }, []);
 
-    const fetchBlockInfo = async () => {
+    const fetchBlocks = async () => {
         try {
-            const response = await axios.get(`https://espority-backend.onrender.com/quadra`, {
-                headers: {
-                    Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxOGY3ZWJiLTBlZWEtNzZkNy1hMDhmLWQ1NjdjNGUwNWJjNSIsImlhdCI6MTcxNTkwMjE5MCwiZXhwIjoxNzE1OTA1NzMwfQ.8lKqZmPPzL7WFVcB7QvAiOcw_00GG2j1_CDW5e6I2io"
+            const response = await axios.get(
+                `https://espority-backend.onrender.com/quadra/horarios/${infoBlocks.id}`,
+                {
+                    headers: {
+                        Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxOGY3ZWJiLTBlZWEtNzZkNy1hMDhmLWQ1NjdjNGUwNWJjNSIsImlhdCI6MTcxNTk4OTQ3MiwiZXhwIjoxNzE1OTkzMDEyfQ.Kezj3gSWFQyZ5RJcm5OFX31Bu7T6ilr2keeHNERVz68",
+                    },
                 }
-            });
-            setBlockInfo(response.data.courts);
-            console.log(response.data.courts);
+            );
+            setDayInfo(response.data.times);
+            console.log(response.data.times);
         } catch (error) {
-            console.error('Erro ao buscar informações do bloco:', error);
+            console.error('Erro ao realizar a solicitação:', error);
         }
     };
 
-    // const fetchDayInfo = async () => {
-    //     try {
-    //         const resDay = await axios.get(`https://espority-backend.onrender.com/dias_semana`)
-    //         setDayInfo(resDay.data);
-    //     } catch (error) {
-    //         console.error('Erro ao buscar informações do bloco:', error);
-    //     }
-    // };
-
     return (
         <ScrollView style={styles.mainContainer}>
-            {blockInfo && (
-                <View style={styles.headerContainer}>
-                    <View style={styles.bannerBlockContainer}>
-                        <Image
-                            source={{ uri: "https://i.imgur.com/0mpg3sp.jpeg" }}
-                            style={styles.image}
-                        />
-                    </View>
-                    <View style={styles.textContainer}>
-                        <Text style={styles.textTitle}>{blockInfo.nome}</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.sectionContainer}>rua, n° 150</Text>
-                    </View>
+            <View style={styles.headerContainer}>
+                <View style={styles.bannerBlockContainer}>
+                    <Image
+                        source={{ uri: "https://i.imgur.com/0mpg3sp.jpeg" }}
+                        style={styles.image}
+                    />
                 </View>
-            )}
+                <View style={styles.textContainer}>
+                    <Text style={styles.textTitle}>{infoBlocks.nome}</Text>
+                    <Text style={styles.textSubtitle}>
+                        {infoBlocks.complexo_esportivo.rua}, N° {infoBlocks.complexo_esportivo.numero}
+                        {dayInfo.horario_inicial}
+                    </Text>
+                </View>
+                {dayInfo && dayInfo.length > 0 ? (
+                    dayInfo.map((day, index) => (
+                        <HorarioSelector
+                            key={index}
+                            horarioInicio={day.horario_inicial}
+                            horarioTermino={day.horario_final}
+                        />
+                    ))
+                ) : (
+                    <Text style={styles.textSubtitle}>Carregando horários...</Text>
+                )}
+            </View>
         </ScrollView>
     );
 };
@@ -59,25 +65,19 @@ export const BlocksDetailScreen = () => {
 const styles = StyleSheet.create({
     mainContainer: {
         padding: 5,
-        margin: 5 
+        margin: 5,
     },
     headerContainer: {
         justifyContent: 'center',
         backgroundColor: '#ffffff',
         padding: 10,
-        borderTopLeftRadius: 6,
-        borderTopRightRadius: 6,
-        borderBottomLeftRadius: 6,
-        borderBottomRightRadius: 6
+        borderRadius: 6,
     },
     bannerBlockContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',
-        borderTopLeftRadius: 4,
-        borderTopRightRadius: 4,
-        borderBottomLeftRadius: 4,
-        borderBottomRightRadius: 4
+        borderRadius: 4,
     },
     image: {
         height: 200,
@@ -89,18 +89,12 @@ const styles = StyleSheet.create({
         color: '#4E4E4E',
         marginTop: 10,
     },
-    sectionContainer: {
-        backgroundColor: '#ffffff',
-        alignItems: 'center',
-        paddingHorizontal: 14,
-        paddingVertical: 14,
-        borderTopLeftRadius: 6,
-        borderTopRightRadius: 6,
-        borderBottomLeftRadius: 6,
-        borderBottomRightRadius: 6,
-        marginBottom: 10,
+    textSubtitle: {
+        fontSize: 16,
+        color: '#494949',
     },
     textContainer: {
-        alignItems: 'center'
-    }
-})
+        marginTop: 10,
+        alignItems: 'center',
+    },
+});

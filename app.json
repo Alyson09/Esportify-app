@@ -1,15 +1,17 @@
 {
   "expo": {
-    "name": "Aluguel de quadras",
-    "slug": "Aluguel de quadras",
+    "name": "NomeDoSeuApp",
+    "slug": "nome-do-seu-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,17 +22,11 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.joaolucasgomess.temosvagas"
+        "backgroundColor": "#FFFFFF"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "292a01d6-2e00-4b92-833b-72d20ea6cfab"
-      }
     }
   }
 }

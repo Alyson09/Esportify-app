@@ -15,7 +15,7 @@ export const FeedBlocks = () => {
         try {
             const response = await axios.get('https://espority-backend.onrender.com/quadra', {
                 headers: {
-                    Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxOGY3ZWJiLTBlZWEtNzZkNy1hMDhmLWQ1NjdjNGUwNWJjNSIsImlhdCI6MTcxNTkwMjE5MCwiZXhwIjoxNzE1OTA1NzMwfQ.8lKqZmPPzL7WFVcB7QvAiOcw_00GG2j1_CDW5e6I2io"
+                    Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxOGY3ZWJiLTBlZWEtNzZkNy1hMDhmLWQ1NjdjNGUwNWJjNSIsImlhdCI6MTcxNTk4OTQ3MiwiZXhwIjoxNzE1OTkzMDEyfQ.Kezj3gSWFQyZ5RJcm5OFX31Bu7T6ilr2keeHNERVz68"
                 }
             });
             setBlocks(response.data.courts);

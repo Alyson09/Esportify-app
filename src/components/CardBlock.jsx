@@ -26,8 +26,11 @@ export const CardBlock = ({ infoBlocks }) => {
             </View>
             <View style={styles.textContainer}>
                 <Text style={styles.textTitle}>{infoBlocks.nome}</Text>
-                <Text style={styles.textTitle}>{infoBlocks.id}</Text>
-            
+                <Text style={styles.textTitle}>{infoBlocks.complexo_esportivo.rua}</Text>
+                <Text style={styles.textTitle}>{infoBlocks.complexo_esportivo.bairro}</Text>
+                <Text style={styles.textTitle}>{infoBlocks.complexo_esportivo.cidade}</Text>
+                <Text style={styles.textTitle}>{infoBlocks.complexo_esportivo.numero}</Text>
+                <Text style={styles.textTitle}>{infoBlocks.complexo_esportivo.cep}</Text>
             </View>
             <View>
             </View>
