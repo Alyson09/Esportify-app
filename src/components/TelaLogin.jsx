@@ -3,31 +3,30 @@ import { View, KeyboardAvoidingView,
     TextInput, TouchableOpacity, 
     Text, StyleSheet, Animated } from "react-native";
 import axios from 'axios';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 export default function TelaLogin() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const navigation = useNavigation();
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://seu-endpoint-de-login.com/api/login', {
+            const response = await axios.post('https://espority-backend.onrender.com/jogador/login', {
                 email: email,
                 senha: senha,
             });
             if (response.status === 200) {
                 const token = response.data.token;
                 await AsyncStorage.setItem('token', token);
-                Alert.alert('Login bem-sucedido!');
+                console.log('Login bem-sucedido!');
+                navigation.navigate('BlockListScreen');
             } else {
-                Alert.alert('Erro de login', response.data.message || 'Algo deu errado!');
+                console.log('Erro de login', response.data.message);
             }
         } catch (error) {
-            if (error.response) {
-                Alert.alert('Erro de login', error.response.data.message || 'Algo deu errado!');
-            } else {
-                Alert.alert('Erro de rede', 'Não foi possível conectar ao servidor');
-            }
+            console.error('Erro no servidor:', error);
         }
     };
 
@@ -39,7 +38,7 @@ export default function TelaLogin() {
                         styles.logo
                         }
                     resizeMode="cover"
-                    source={require('../data/IMG/Tlogin.png')}
+                    source={require('../data/IMG/login.png')}
                 />
             </View>
 

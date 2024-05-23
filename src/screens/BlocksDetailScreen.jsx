@@ -19,7 +19,7 @@ export const BlocksDetailScreen = () => {
                 `https://espority-backend.onrender.com/quadra/horarios/${infoBlocks.id}`,
                 {
                     headers: {
-                        Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxOGY3ZWJiLTBlZWEtNzZkNy1hMDhmLWQ1NjdjNGUwNWJjNSIsImlhdCI6MTcxNTk4OTQ3MiwiZXhwIjoxNzE1OTkzMDEyfQ.Kezj3gSWFQyZ5RJcm5OFX31Bu7T6ilr2keeHNERVz68",
+                        Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxOGZhNTYyLWQzMTAtN2JiMi05ODI4LTE4MDc0YTJlY2YyMSIsImlhdCI6MTcxNjQ2NjY5NywiZXhwIjoxNzE2NDcwMjM3fQ.HL_LmR94rWeuruJttQEYi9hz-s0sI7Poy485SLq3dL8",
                     },
                 }
             );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import axios from 'axios';
 import { CardBlock } from './CardBlock';
+import GetToken from '../components/GetToken'
 
 
 export const FeedBlocks = () => {
@@ -13,9 +14,14 @@ export const FeedBlocks = () => {
 
     const fetchBlocks = async () => {
         try {
+            const token = await GetToken();
+            if(!token){
+                console.error("Token não encontrado");
+                return;
+            }
             const response = await axios.get('https://espority-backend.onrender.com/quadra', {
                 headers: {
-                    Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxOGY3ZWJiLTBlZWEtNzZkNy1hMDhmLWQ1NjdjNGUwNWJjNSIsImlhdCI6MTcxNTk4OTQ3MiwiZXhwIjoxNzE1OTkzMDEyfQ.Kezj3gSWFQyZ5RJcm5OFX31Bu7T6ilr2keeHNERVz68"
+                    Authorization:`${token}`
                 }
             });
             setBlocks(response.data.courts);
