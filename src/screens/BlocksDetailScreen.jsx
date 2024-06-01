@@ -3,7 +3,7 @@ import { ScrollView, View, Text, Image, StyleSheet } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import HorarioSelector from '../components/HorarioSelector';
 import axios from 'axios';
-import GetToken from '../components/GetToken'
+import GetToken from '../components/GetToken';
 
 export const BlocksDetailScreen = () => {
     const route = useRoute();
@@ -17,7 +17,7 @@ export const BlocksDetailScreen = () => {
     const fetchBlocks = async () => {
         try {
             const token = await GetToken();
-            if(!token){
+            if (!token) {
                 console.error("Token não encontrado");
                 return;
             }
@@ -49,13 +49,13 @@ export const BlocksDetailScreen = () => {
                     <Text style={styles.textTitle}>{infoBlocks.nome}</Text>
                     <Text style={styles.textSubtitle}>
                         {infoBlocks.complexo_esportivo.rua}, N° {infoBlocks.complexo_esportivo.numero}
-                        {dayInfo.horario_inicial}
                     </Text>
                 </View>
                 {dayInfo && dayInfo.length > 0 ? (
                     dayInfo.map((day, index) => (
                         <HorarioSelector
                             key={index}
+                            dia={day.dia_semana.desc_dia}
                             horarioInicio={day.horario_inicial}
                             horarioTermino={day.horario_final}
                         />

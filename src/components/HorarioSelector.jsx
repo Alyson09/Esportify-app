@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { Animated, StyleSheet, Text, View, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-function HorarioSelector({ horarioInicio, horarioTermino }) {
+function formatTime(timeString) {
+    const date = new Date(timeString);
+    return `${date.getUTCHours()}:${date.getUTCMinutes().toString().padStart(2, '0')}`;
+}
+
+function HorarioSelector({ dia, horarioInicio, horarioTermino }) {
     const [opened, setOpened] = useState(false);
     const [animation] = useState(new Animated.Value(0));
 
@@ -18,23 +23,23 @@ function HorarioSelector({ horarioInicio, horarioTermino }) {
 
     const heightAnimationInterpolation = animation.interpolate({
         inputRange: [0, 1],
-        outputRange: [0, horarioInicio.length * 40], // Ajuste a altura de acordo com o número de horários
+        outputRange: [0, 40], // Adjust height as needed
     });
 
     return (
         <View style={styles.container}>
             <Pressable onPress={toggleAccordion}>
                 <View style={styles.header}>
-                    <Text style={styles.details}>Dia Semana</Text>
+                    <Text style={styles.details}>{dia}</Text>
                     <AntDesign name={opened ? 'caretup' : 'caretdown'} size={16} />
                 </View>
             </Pressable>
 
             <Animated.View style={[styles.content, { height: heightAnimationInterpolation }]}>
-                {opened && horarioInicio.map((inicio, index) => (
-                    <View key={index} style={styles.timeContainer}>
+                {opened && (
+                    <View style={styles.timeContainer}>
                         <Text style={styles.details}>
-                            {inicio} a {horarioTermino[index]}
+                            {formatTime(horarioInicio)} a {formatTime(horarioTermino)}
                         </Text>
                         <Pressable
                             style={styles.button}
@@ -42,7 +47,7 @@ function HorarioSelector({ horarioInicio, horarioTermino }) {
                             <Text style={styles.buttonText}>Solicitar</Text>
                         </Pressable>
                     </View>
-                ))}
+                )}
             </Animated.View>
         </View>
     );

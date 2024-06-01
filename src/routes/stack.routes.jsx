@@ -1,13 +1,14 @@
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { BlockListScreen } from '../screens/BlockListScreen';
-import { BlocksDetailScreen } from '../screens/BlocksDetailScreen';
-import TelaLogin  from '../components/TelaLogin';
-import {TelaCadastro} from '../screens/TelaCadastro';
+import TelaLogin from '../components/TelaLogin';
+import { TelaCadastro } from '../screens/TelaCadastro';
+import { TabNavigator } from '../components/TabNavigator'; 
+import { BlocksDetailScreen } from '../screens/BlocksDetailScreen'; // Importe a tela de detalhes
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator();
 
 export default function StackRoutes() {
-    return(
+    return (
         <Stack.Navigator>
             <Stack.Screen
                 name="Login"
@@ -23,21 +24,20 @@ export default function StackRoutes() {
                     title: 'Cadastro'
                 }}
             />
-         
             <Stack.Screen
-                name="BlockListScreen"
-                component={BlockListScreen}
+                name="Main"
+                component={TabNavigator}
                 options={{
-                    title: 'Lista de Quadras'
+                    headerShown: false
                 }}
             />
             <Stack.Screen
                 name="BlocksDetailScreen"
                 component={BlocksDetailScreen}
                 options={{
-                    title: 'Quadra'
+                    title: 'Detalhes da Quadra'
                 }}
             />
         </Stack.Navigator>
-    )
+    );
 }

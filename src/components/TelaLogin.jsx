@@ -14,14 +14,15 @@ export default function TelaLogin() {
     const handleLogin = async () => {
         try {
             const response = await axios.post('https://espority-backend.onrender.com/jogador/login', {
-                email: email,
-                senha: senha,
+                email: email.trim(), 
+                senha: senha.trim(),
             });
             if (response.status === 200) {
+                
                 const token = response.data.token;
                 await AsyncStorage.setItem('@user_token', token);
                 console.log('Login bem-sucedido!');
-                navigation.navigate('BlockListScreen');
+                navigation.navigate('Main');
             } else {
                 console.log('Erro de login', response.data.message);
             }
@@ -41,7 +42,7 @@ export default function TelaLogin() {
                     source={require('../data/IMG/login.png')}
                 />
             </View>
-
+            <Text>Quase pronto para começar a partida!</Text>
             <Animated.View 
                 style={styles.container}> 
                 <TextInput 
