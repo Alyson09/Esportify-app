@@ -2,8 +2,8 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TelaLogin from '../components/TelaLogin';
 import { TelaCadastro } from '../screens/TelaCadastro';
-import { TabNavigator } from '../components/TabNavigator'; 
-import { BlocksDetailScreen } from '../screens/BlocksDetailScreen'; // Importe a tela de detalhes
+import { TabNavigator } from './TabNavigator'; 
+import { BlocksDetailScreen } from '../screens/BlocksDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,14 +14,14 @@ export default function StackRoutes() {
                 name="Login"
                 component={TelaLogin}
                 options={{
-                    title: 'Login'
+                    headerShown: false
                 }}
             />
             <Stack.Screen
                 name="Cadastro"
                 component={TelaCadastro}
                 options={{
-                    title: 'Cadastro'
+                    headerShown: false
                 }}
             />
             <Stack.Screen

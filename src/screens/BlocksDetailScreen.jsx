@@ -8,7 +8,7 @@ import GetToken from '../components/GetToken';
 export const BlocksDetailScreen = () => {
     const route = useRoute();
     const { infoBlocks } = route.params;
-    const [dayInfo, setDayInfo] = useState([]);
+    const [dayInfo, setDayInfo] = useState({});
 
     useEffect(() => {
         fetchBlocks();
@@ -29,11 +29,22 @@ export const BlocksDetailScreen = () => {
                     },
                 }
             );
-            setDayInfo(response.data.times);
-            console.log(response.data.times);
+            const groupedData = groupByDay(response.data.times);
+            setDayInfo(groupedData);
         } catch (error) {
             console.error('Erro ao realizar a solicitação:', error);
         }
+    };
+
+    const groupByDay = (times) => {
+        return times.reduce((acc, time) => {
+            const day = time.dia_semana.desc_dia;
+            if (!acc[day]) {
+                acc[day] = [];
+            }
+            acc[day].push(time);
+            return acc;
+        }, {});
     };
 
     return (
@@ -51,13 +62,12 @@ export const BlocksDetailScreen = () => {
                         {infoBlocks.complexo_esportivo.rua}, N° {infoBlocks.complexo_esportivo.numero}
                     </Text>
                 </View>
-                {dayInfo && dayInfo.length > 0 ? (
-                    dayInfo.map((day, index) => (
+                {Object.keys(dayInfo).length > 0 ? (
+                    Object.keys(dayInfo).map((day, index) => (
                         <HorarioSelector
                             key={index}
-                            dia={day.dia_semana.desc_dia}
-                            horarioInicio={day.horario_inicial}
-                            horarioTermino={day.horario_final}
+                            dia={day}
+                            horarios={dayInfo[day]}
                         />
                     ))
                 ) : (

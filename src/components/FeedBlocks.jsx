@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { CardBlock } from './CardBlock';
-import GetToken from '../components/GetToken'
-
+import GetToken from '../components/GetToken';
 
 export const FeedBlocks = () => {
-    const [block, setBlocks] = useState([]);
+    const [blocks, setBlocks] = useState([]);
 
     useEffect(() => {
         fetchBlocks();
@@ -15,13 +14,13 @@ export const FeedBlocks = () => {
     const fetchBlocks = async () => {
         try {
             const token = await GetToken();
-            if(!token){
+            if (!token) {
                 console.error("Token não encontrado");
                 return;
             }
             const response = await axios.get('https://espority-backend.onrender.com/quadra', {
                 headers: {
-                    Authorization:`${token}`
+                    Authorization: `${token}`
                 }
             });
             setBlocks(response.data.courts);
@@ -30,17 +29,24 @@ export const FeedBlocks = () => {
         }
     };
 
-    const printBlocks = block.map((singleBlock) => (
-        <CardBlock
-            infoBlocks={singleBlock}
-            key={singleBlock.id}
-        />
-    ));
-    
-
     return (
-        <ScrollView>
-            {printBlocks}
-        </ScrollView>
+        <View style={styles.container}>
+            <ScrollView>
+                {blocks.map((singleBlock) => (
+                    <CardBlock
+                        infoBlocks={singleBlock}
+                        key={singleBlock.id}
+                    />
+                ))}
+            </ScrollView>
+        </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+});
+
