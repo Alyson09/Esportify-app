@@ -5,7 +5,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 export function TelaPerfil() {
     const navigation = useNavigation();
     const route = useRoute();
-    const { email, nome } = route.params;
+    const email = 'Alyson@test.com'
+    const  nome  = 'Alyson'
 
     return (
         <View style={styles.container}>

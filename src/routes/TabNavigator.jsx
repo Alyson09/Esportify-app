@@ -43,7 +43,7 @@ export function TabNavigator() {
             <Tab.Screen
                 name="TelaBusca"
                 component={TelaBusca}
-                options={{ headerShown: false}}
+                options={{ title: 'Pesquisa'}}
             />
             <Tab.Screen
                 name="Reservas"

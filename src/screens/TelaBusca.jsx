@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, TextInput, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import CardBlock from '../components/CardBlock';
 
-export function TelaBusca({ quadras }) {
+export function TelaBusca({ quadras = [] }) {
     const [query, setQuery] = useState('');
-    const [filteredQuadras, setFilteredQuadras] = useState(quadras || []);
-    const navigation = useNavigation();
+    const [filteredQuadras, setFilteredQuadras] = useState(quadras);
 
     const handleSearch = (text) => {
         setQuery(text);
@@ -18,22 +18,22 @@ export function TelaBusca({ quadras }) {
     };
 
     const renderQuadra = ({ item }) => (
-        <TouchableOpacity 
-            style={styles.quadraContainer} 
-            onPress={() => navigation.navigate('BlocksDetailScreen', { infoBlocks: item })}
-        >
-            <Text style={styles.quadraText}>{item.nome}</Text>
-        </TouchableOpacity>
+        <CardBlock infoBlocks={item} />
     );
 
     return (
         <View style={styles.container}>
-            <TextInput
-                style={styles.searchInput}
-                placeholder="Buscar Quadras, Locatários em todo Esportify"
-                value={query}
-                onChangeText={handleSearch}
-            />
+            <View style={styles.searchContainer}>
+                <TextInput
+                    style={styles.searchInput}
+                    placeholder="Buscar Quadras, Locatários em todo Esportify"
+                    value={query}
+                    onChangeText={handleSearch}
+                />
+                <TouchableOpacity onPress={() => handleSearch(query)} style={styles.searchIcon}>
+                    <Icon name="search" size={20} color="#000" />
+                </TouchableOpacity>
+            </View>
             <FlatList
                 data={filteredQuadras}
                 renderItem={renderQuadra}
@@ -49,28 +49,26 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         backgroundColor: '#fff',
-        marginTop: '15%'
     },
-    searchInput: {
-        height: 40,
+    searchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
         borderColor: '#ccc',
         backgroundColor: '#D9D9D9',
         borderWidth: 1,
         borderRadius: 5,
         paddingHorizontal: 10,
         marginBottom: 10,
+    },
+    searchInput: {
+        flex: 1,
+        height: 40,
         color: '#000',
+    },
+    searchIcon: {
+        padding: 5,
     },
     resultsList: {
         marginTop: 10,
     },
-    quadraContainer: {
-        padding: 10,
-        borderBottomColor: '#ccc',
-        borderBottomWidth: 1,
-    },
-    quadraText: {
-        fontSize: 16,
-    },
 });
-

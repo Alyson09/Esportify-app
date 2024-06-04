@@ -9,7 +9,6 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function TelaLogin() {
     const [email, setEmail] = useState('');
-    const [nome, setNome] = useState('');
     const [senha, setSenha] = useState('');
     const navigation = useNavigation();
 
@@ -24,7 +23,6 @@ export default function TelaLogin() {
                 await AsyncStorage.setItem('@user_token', token);
                 console.log('Login bem-sucedido!');
                 navigation.navigate('Main');
-                navigation.navigate('TelaPerfil', { email, nome });
             } else {
                 console.log('Erro de login', response.data.message);
             }
@@ -53,13 +51,6 @@ export default function TelaLogin() {
                     autoCorrect={false}
                     onChangeText={setEmail}
                     value={email}
-                />
-                <TextInput 
-                    style={styles.input}
-                    placeholder="Nome"
-                    autoCorrect={false}
-                    onChangeText={setNome}
-                    value={nome}
                 />
                 <TextInput 
                     style={styles.input}

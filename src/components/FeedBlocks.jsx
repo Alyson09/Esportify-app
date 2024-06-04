@@ -3,6 +3,7 @@ import { View, ScrollView, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { CardBlock } from './CardBlock';
 import GetToken from '../components/GetToken';
+import { TelaBusca } from '../screens/TelaBusca';
 
 export const FeedBlocks = () => {
     const [blocks, setBlocks] = useState([]);
@@ -30,7 +31,7 @@ export const FeedBlocks = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <View>
             <ScrollView>
                 {blocks.map((singleBlock) => (
                     <CardBlock
@@ -38,15 +39,8 @@ export const FeedBlocks = () => {
                         key={singleBlock.id}
                     />
                 ))}
-            </ScrollView>
+                <TelaBusca quadras={blocks} />
+            </ScrollView>  
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-});
-
