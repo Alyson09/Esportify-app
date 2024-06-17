@@ -7,10 +7,12 @@ import GetToken from '../components/GetToken';
 const FeedBlocks = () => {
     const [blocks, setBlocks] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState({})
     const [error, setError] = useState(null);
 
     useEffect(() => {
         fetchBlocks();
+        getUserLogado()
     }, []);
 
     const fetchBlocks = async () => {
@@ -22,12 +24,14 @@ const FeedBlocks = () => {
                 setLoading(false);
                 return;
             }
+            console.log(token)
             const response = await axios.get('https://espority-backend.onrender.com/quadra', {
                 headers: {
                     Authorization: `${token}`
                 }
             });
             setBlocks(response.data.courts);
+            console.log(blocks)
         } catch (error) {
             console.error('Erro ao realizar a solicitação:', error);
             setError('Erro ao realizar a solicitação');
@@ -35,6 +39,29 @@ const FeedBlocks = () => {
             setLoading(false);
         }
     };
+
+    const getUserLogado = async() => {
+      try {
+        const token = await GetToken();
+        if (!token) {
+            console.error("Token não encontrado");
+            setError("Token não encontrado");
+            setLoading(false);
+            return;
+        }
+        const response = await axios.get('https://espority-backend.onrender.com/jogador/buscar-logado', {
+            headers: {
+                Authorization: `${token}`
+            }
+        });
+        setUser(response.data.player);
+      } catch (error) {
+          console.error('Erro ao realizar a solicitação:', error);
+          setError('Erro ao realizar a solicitação');
+      } finally {
+          setLoading(false);
+      }
+    }
 
     const renderFavoriteItem = ({ item }) => (
         <View style={styles.favoriteItemContainer}>
@@ -73,7 +100,7 @@ const FeedBlocks = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.greetingText}>Olá, Alyson!</Text>
+            <Text style={styles.greetingText}>Olá, {user.nome}</Text>
             <View style={styles.favoritesContainer}>
                 <Text style={styles.favoritesTitle}>Seus Favoritos:</Text>
                 <FlatList
