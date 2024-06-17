@@ -1,12 +1,17 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 export function TelaPerfil() {
     const navigation = useNavigation();
-    const route = useRoute();
-    const email = 'Alyson@test.com'
-    const  nome  = 'Alyson'
+    const email = 'Alyson@test.com';
+    const nome = 'Alyson';
+
+    const handleLogout = () => {
+        navigation.navigate('Login');
+    };
+
+    //só falta realizar a integração e puxar nome e email do usuário
 
     return (
         <View style={styles.container}>
@@ -14,10 +19,8 @@ export function TelaPerfil() {
             <Text style={styles.text}>{nome}</Text>
             <Text style={styles.label}>Email:</Text>
             <Text style={styles.text}>{email}</Text>
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('TelaLogin')}>
-                <Text style={styles.buttonText}>Voltar ao Login</Text>
+            <TouchableOpacity style={styles.button} onPress={handleLogout}>
+                <Text style={styles.buttonText}>Logout</Text>
             </TouchableOpacity>
         </View>
     );

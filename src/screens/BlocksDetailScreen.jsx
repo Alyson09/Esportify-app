@@ -1,50 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, Image, StyleSheet } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { ScrollView, View, Text, Image, StyleSheet, Pressable } from 'react-native';
 import HorarioSelector from '../components/HorarioSelector';
-import axios from 'axios';
-import GetToken from '../components/GetToken';
+import { Calendar } from 'react-native-calendars';
 
-export const BlocksDetailScreen = () => {
-    const route = useRoute();
-    const { infoBlocks } = route.params;
-    const [dayInfo, setDayInfo] = useState({});
+export function BlocksDetailScreen() {
+    const [dayInfo, setDayInfo] = useState([]);
+    const [selectedDate, setSelectedDate] = useState('');
+    const [showCalendar, setShowCalendar] = useState(false);
 
     useEffect(() => {
-        fetchBlocks();
-    }, []);
-
-    const fetchBlocks = async () => {
-        try {
-            const token = await GetToken();
-            if (!token) {
-                console.error("Token não encontrado");
-                return;
-            }
-            const response = await axios.get(
-                `https://espority-backend.onrender.com/quadra/horarios/${infoBlocks.id}`,
-                {
-                    headers: {
-                        Authorization: `${token}`,
-                    },
-                }
-            );
-            const groupedData = groupByDay(response.data.times);
-            setDayInfo(groupedData);
-        } catch (error) {
-            console.error('Erro ao realizar a solicitação:', error);
+        if (selectedDate) {
+            fetchBlocks();
         }
+    }, [selectedDate]);
+
+    const fetchBlocks = () => {
+        const staticData = [
+            { dia_semana: 'Segunda', horario: '08:00' },
+            { dia_semana: 'Segunda', horario: '10:00' },
+            { dia_semana: 'Terça', horario: '12:00' },
+            { dia_semana: 'Terça', horario: '14:00' },
+            { dia_semana: 'Quarta', horario: '16:00' },
+        ];
+        const dayOfWeek = getDayOfWeek(selectedDate);
+        const filteredData = staticData.filter(item => item.dia_semana === dayOfWeek);
+        setDayInfo(filteredData);
     };
 
-    const groupByDay = (times) => {
-        return times.reduce((acc, time) => {
-            const day = time.dia_semana.desc_dia;
-            if (!acc[day]) {
-                acc[day] = [];
-            }
-            acc[day].push(time);
-            return acc;
-        }, {});
+    const getDayOfWeek = (dateString) => {
+        const date = new Date(dateString);
+        const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+        return days[date.getDay()];
+    };
+
+    const handleDateSelect = (day) => {
+        setSelectedDate(day.dateString);
+        setShowCalendar(false);
+    };
+
+    const infoBlocks = {
+        nome: 'Quadra Esportiva',
+        complexo_esportivo: {
+            rua: 'Rua das Palmeiras',
+            numero: 123,
+        },
     };
 
     return (
@@ -62,14 +61,25 @@ export const BlocksDetailScreen = () => {
                         {infoBlocks.complexo_esportivo.rua}, N° {infoBlocks.complexo_esportivo.numero}
                     </Text>
                 </View>
-                {Object.keys(dayInfo).length > 0 ? (
-                    Object.keys(dayInfo).map((day, index) => (
-                        <HorarioSelector
-                            key={index}
-                            dia={day}
-                            horarios={dayInfo[day]}
-                        />
-                    ))
+                <Pressable style={styles.datePickerButton} onPress={() => setShowCalendar(true)}>
+                    <Text style={styles.datePickerButtonText}>
+                        {selectedDate ? selectedDate : 'Selecione uma data'}
+                    </Text>
+                </Pressable>
+                {showCalendar && (
+                    <Calendar
+                        onDayPress={handleDateSelect}
+                        markedDates={{
+                            [selectedDate]: { selected: true, marked: true }
+                        }}
+                        style={styles.calendar}
+                    />
+                )}
+                {dayInfo.length > 0 ? (
+                    <HorarioSelector
+                        dia={getDayOfWeek(selectedDate)}
+                        horarios={dayInfo}
+                    />
                 ) : (
                     <Text style={styles.textSubtitle}>Carregando horários...</Text>
                 )}
@@ -112,5 +122,19 @@ const styles = StyleSheet.create({
     textContainer: {
         marginTop: 10,
         alignItems: 'center',
+    },
+    datePickerButton: {
+        backgroundColor: '#4E4E4E',
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    datePickerButtonText: {
+        color: 'white',
+        fontSize: 16,
+    },
+    calendar: {
+        marginBottom: 10,
     },
 });

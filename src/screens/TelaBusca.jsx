@@ -1,24 +1,41 @@
 import React, { useState } from 'react';
-import { View, TextInput, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput, FlatList, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CardBlock from '../components/CardBlock';
 
 export function TelaBusca({ quadras = [] }) {
     const [query, setQuery] = useState('');
-    const [filteredQuadras, setFilteredQuadras] = useState(quadras);
+    const [filteredQuadras, setFilteredQuadras] = useState([]);
+    const [recentSearches, setRecentSearches] = useState([]);
 
-    const handleSearch = (text) => {
-        setQuery(text);
-        if (text) {
-            const filteredData = quadras.filter(item => item.nome.toLowerCase().includes(text.toLowerCase()));
+    const handleSearch = () => {
+        if (query) {
+            const filteredData = quadras.filter(item => item.nome.toLowerCase().includes(query.toLowerCase()));
             setFilteredQuadras(filteredData);
+
+            // Salva a busca recente
+            setRecentSearches(prevSearches => {
+                const updatedSearches = [query, ...prevSearches.filter(search => search !== query)];
+                return updatedSearches.slice(0, 5); // Limita a 5 buscas recentes
+            });
         } else {
-            setFilteredQuadras(quadras);
+            setFilteredQuadras([]);
         }
+    };
+
+    const handleRecentSearchPress = (text) => {
+        setQuery(text);
+        handleSearch(text);
     };
 
     const renderQuadra = ({ item }) => (
         <CardBlock infoBlocks={item} />
+    );
+
+    const renderRecentSearch = ({ item }) => (
+        <TouchableOpacity onPress={() => handleRecentSearchPress(item)}>
+            <Text style={styles.recentSearchItem}>{item}</Text>
+        </TouchableOpacity>
     );
 
     return (
@@ -28,18 +45,30 @@ export function TelaBusca({ quadras = [] }) {
                     style={styles.searchInput}
                     placeholder="Buscar Quadras, Locatários em todo Esportify"
                     value={query}
-                    onChangeText={handleSearch}
+                    onChangeText={setQuery}
                 />
-                <TouchableOpacity onPress={() => handleSearch(query)} style={styles.searchIcon}>
+                <TouchableOpacity onPress={handleSearch} style={styles.searchIcon}>
                     <Icon name="search" size={20} color="#000" />
                 </TouchableOpacity>
             </View>
-            <FlatList
-                data={filteredQuadras}
-                renderItem={renderQuadra}
-                keyExtractor={(item) => item.id.toString()}
-                style={styles.resultsList}
-            />
+            {query === '' && recentSearches.length > 0 ? (
+                <View style={styles.recentSearchContainer}>
+                    <Text style={styles.recentSearchTitle}>Buscas Recentes:</Text>
+                    <FlatList
+                        data={recentSearches}
+                        renderItem={renderRecentSearch}
+                        keyExtractor={(item, index) => index.toString()}
+                        horizontal
+                    />
+                </View>
+            ) : (
+                <FlatList
+                    data={filteredQuadras}
+                    renderItem={renderQuadra}
+                    keyExtractor={(item) => item.id.toString()}
+                    style={styles.resultsList}
+                />
+            )}
         </View>
     );
 };
@@ -67,6 +96,19 @@ const styles = StyleSheet.create({
     },
     searchIcon: {
         padding: 5,
+    },
+    recentSearchContainer: {
+        marginBottom: 10,
+    },
+    recentSearchTitle: {
+        fontSize: 16,
+        marginBottom: 5,
+    },
+    recentSearchItem: {
+        padding: 5,
+        backgroundColor: '#D9D9D9',
+        borderRadius: 5,
+        marginRight: 5,
     },
     resultsList: {
         marginTop: 10,

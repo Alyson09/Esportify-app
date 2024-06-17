@@ -1,13 +1,35 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Image, FlatList } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 const Tab = createMaterialTopTabNavigator();
 
+const sampleData = [
+  { id: '1', image: 'https://i.imgur.com/0mpg3sp.jpeg', time: '10:00 as 11:00', date: '16/06/2024' },
+];
+
+const Card = ({ image, time, date }) => (
+  <View style={styles.card}>
+    <Image source={{ uri: image }} style={styles.image} />
+    <View style={styles.cardContent}>
+      <Text style={styles.time}>{time}</Text>
+      <Text style={styles.date}>{date}</Text>
+    </View>
+  </View>
+);
+
+const renderItem = ({ item }) => (
+  <Card image={item.image} time={item.time} date={item.date} />
+);
+
 function SolicitadasScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Quadras Solicitadas</Text>
+      <FlatList
+        data={sampleData}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
     </View>
   );
 }
@@ -15,7 +37,11 @@ function SolicitadasScreen() {
 function AceitasScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Quadras Aceitas</Text>
+      <FlatList
+        data={sampleData}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
     </View>
   );
 }
@@ -23,7 +49,11 @@ function AceitasScreen() {
 function NegadasScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Quadras Negadas</Text>
+      <FlatList
+        data={sampleData}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
     </View>
   );
 }
@@ -38,19 +68,22 @@ export function Reservas() {
         screenOptions={({ route }) => ({
           tabBarStyle: {
             backgroundColor: 'white',
-            borderRadius:20,
-            marginLeft: 10,
-            marginRight: 10
+            borderRadius: 20,
+            marginHorizontal: 10,
+            elevation: 2,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.2,
+            shadowRadius: 2,
           },
-          tabBarActiveTintColor:
-            route.name === 'Solicitadas'
-              ? 'orange'
-              : route.name === 'Aceitas'
-              ? 'green'
-              : 'red',
+          tabBarActiveTintColor: 'white',
           tabBarInactiveTintColor: 'black',
           tabBarLabelStyle: { fontWeight: 'bold' },
-          tabBarIndicatorStyle: { backgroundColor: 'white' },
+          tabBarIndicatorStyle: {
+            backgroundColor: route.name === 'Solicitadas' ? 'orange' : route.name === 'Aceitas' ? 'green' : 'red',
+            height: '100%',
+            borderRadius: 20,
+          },
         })}
       >
         <Tab.Screen name="Solicitadas" component={SolicitadasScreen} />
@@ -82,5 +115,36 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  card: {
+    flexDirection: 'row',
+    padding: 20,
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    width: 350
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+  },
+  cardContent: {
+    flex: 1,
+    marginLeft: 10,
+    justifyContent: 'center',
+  },
+  time: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  date: {
+    fontSize: 14,
+    color: 'gray',
   },
 });

@@ -38,7 +38,7 @@ export function TabNavigator() {
             <Tab.Screen
                 name="BlockListScreen"
                 component={BlockListScreen}
-                options={{ title: 'Início' }}
+                options={{ title: 'Home' }}
             />
             <Tab.Screen
                 name="TelaBusca"
