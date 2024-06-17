@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
-export function TabNavigator() {
+export function TabNavigator({ quadras }) {
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -42,9 +42,10 @@ export function TabNavigator() {
             />
             <Tab.Screen
                 name="TelaBusca"
-                component={TelaBusca}
-                options={{ title: 'Pesquisa'}}
-            />
+                options={{ title: 'Pesquisa' }}
+            >
+                {props => <TelaBusca {...props} quadras={quadras} />}
+            </Tab.Screen>
             <Tab.Screen
                 name="Reservas"
                 component={Reservas}

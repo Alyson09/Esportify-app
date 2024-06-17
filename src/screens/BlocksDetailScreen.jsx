@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Image, StyleSheet, Pressable, Animated } from 'react-native';
 import HorarioSelector from '../components/HorarioSelector';
 import { Calendar } from 'react-native-calendars';
+import { FontAwesome } from '@expo/vector-icons';
+
+
+//fazer integração com o endpoint de horários disponiveis, o componente de solicitar é montado na tela horarioselector
 
 export function BlocksDetailScreen() {
     const [dayInfo, setDayInfo] = useState([]);
@@ -29,7 +33,7 @@ export function BlocksDetailScreen() {
 
     const getDayOfWeek = (dateString) => {
         const date = new Date(dateString);
-        const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+        const days = [ 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
         return days[date.getDay()];
     };
 
@@ -63,11 +67,14 @@ export function BlocksDetailScreen() {
                         {'\n'}{infoBlocks.complexo_esportivo.bairro}, {infoBlocks.complexo_esportivo.cidade} - {infoBlocks.complexo_esportivo.estado}
                     </Text>
                 </View>
-                <Pressable style={styles.datePickerButton} onPress={() => setShowCalendar(true)}>
-                    <Text style={styles.datePickerButtonText}>
-                        {selectedDate ? selectedDate : 'Data'}
-                    </Text>
-                </Pressable>
+                <View style={styles.datePickerContainer}>
+                    <Pressable style={styles.datePickerButton} onPress={() => setShowCalendar(true)}>
+                        <FontAwesome name="calendar" size={16} color="white" style={styles.calendarIcon} />
+                        <Text style={styles.datePickerButtonText}>
+                            {selectedDate ? selectedDate : 'Selecione uma data'}
+                        </Text>
+                    </Pressable>
+                </View>
                 {showCalendar && (
                     <Calendar
                         onDayPress={handleDateSelect}
@@ -83,13 +90,13 @@ export function BlocksDetailScreen() {
                     />
                 ) : (
                     <>
-                    <Animated.Image
-                        style={styles.bola}
-                        resizeMode="contain"
-                        source={require('../data/IMG/bola.png')}
-                    />
-                    <Text style={styles.textErro}>Não há horários disponíveis {'\n'} para a data selecionada.</Text>
-                </>
+                        <Animated.Image
+                            style={styles.bola}
+                            resizeMode="contain"
+                            source={require('../data/IMG/bola.png')}
+                        />
+                        <Text style={styles.textErro}>Não há horários disponíveis {'\n'} para a data selecionada.</Text>
+                    </>
                 )}
             </View>
         </ScrollView>
@@ -113,9 +120,14 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 2,
         elevation: 5,
+        alignItems: 'center',
     },
     image: {
         height: 200,
+        width: '100%',
+    },
+    textContainer: {
+        alignItems: 'flex-start',
         width: '100%',
     },
     textTitle: {
@@ -128,19 +140,26 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#494949',
     },
-    textContainer: {
+    datePickerContainer: {
         alignItems: 'center',
+        marginVertical: 10,
+        width: '100%',
     },
     datePickerButton: {
         backgroundColor: '#4E4E4E',
-        padding: 10,
+        padding: 5,
         borderRadius: 5,
         alignItems: 'center',
-        marginVertical: 10,
+        justifyContent: 'center',
+        width: 180,
     },
     datePickerButtonText: {
         color: 'white',
         fontSize: 16,
+        marginLeft: 5,
+    },
+    calendarIcon: {
+        marginRight: 5,
     },
     calendar: {
         marginBottom: 10,

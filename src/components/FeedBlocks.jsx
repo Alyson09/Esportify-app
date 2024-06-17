@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, Text, Image, FlatList } from 'react-native';
+import { View, ScrollView, StyleSheet, Text, Image, FlatList, ActivityIndicator } from 'react-native';
 import axios from 'axios';
-import CardBlock from './CardBlock';
+import {CardBlock} from './CardBlock';
 import GetToken from '../components/GetToken';
 
-export const FeedBlocks = () => {
+const FeedBlocks = () => {
     const [blocks, setBlocks] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         fetchBlocks();
@@ -16,6 +18,8 @@ export const FeedBlocks = () => {
             const token = await GetToken();
             if (!token) {
                 console.error("Token não encontrado");
+                setError("Token não encontrado");
+                setLoading(false);
                 return;
             }
             const response = await axios.get('https://espority-backend.onrender.com/quadra', {
@@ -26,10 +30,11 @@ export const FeedBlocks = () => {
             setBlocks(response.data.courts);
         } catch (error) {
             console.error('Erro ao realizar a solicitação:', error);
+            setError('Erro ao realizar a solicitação');
+        } finally {
+            setLoading(false);
         }
     };
-
-    //fazer integração com a compania e passar as informações abaixo 
 
     const renderFavoriteItem = ({ item }) => (
         <View style={styles.favoriteItemContainer}>
@@ -41,14 +46,30 @@ export const FeedBlocks = () => {
         </View>
     );
 
-    //depois da integração feita só retirar esses dados
+    // Lista de favoritos de exemplo
     const favoriteItems = [
-        { id: 1, name: 'Quadra do seu zé', imageUrl: 'https://i.imgur.com/0mpg3sp.jpeg' },
-        { id:2, name: 'HARPA.AI ARENA', imageUrl: 'https://i.imgur.com/0mpg3sp.jpeg' },
-        { id:3, name: 'Alyson e Cia. Volei', imageUrl: 'https://i.imgur.com/0mpg3sp.jpeg' },
-        { id:4, name: 'Goat Arena', imageUrl: 'https://i.imgur.com/0mpg3sp.jpeg' },
-        { id:5, name: 'Maracanã', imageUrl: 'https://i.imgur.com/0mpg3sp.jpeg' },
+        { id: '1', name: 'Quadra do seu zé', imageUrl: 'https://i.imgur.com/0mpg3sp.jpeg' },
+        { id: '2', name: 'HARPA.AI ARENA', imageUrl: 'https://i.imgur.com/0mpg3sp.jpeg' },
+        { id: '3', name: 'Alyson e Cia. Volei', imageUrl: 'https://i.imgur.com/0mpg3sp.jpeg' },
+        { id: '4', name: 'Goat Arena', imageUrl: 'https://i.imgur.com/0mpg3sp.jpeg' },
+        { id: '5', name: 'Maracanã', imageUrl: 'https://i.imgur.com/0mpg3sp.jpeg' },
     ];
+
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    }
+
+    if (error) {
+        return (
+            <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>{error}</Text>
+            </View>
+        );
+    }
 
     return (
         <View style={styles.container}>
@@ -59,7 +80,7 @@ export const FeedBlocks = () => {
                     data={favoriteItems}
                     horizontal
                     renderItem={renderFavoriteItem}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item.id.toString()}
                     showsHorizontalScrollIndicator={false}
                 />
             </View>
@@ -84,7 +105,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         margin: 16,
-        marginTop:'5%'
+        marginTop: '5%',
     },
     favoritesContainer: {
         marginBottom: 20,
@@ -109,4 +130,21 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 14,
     },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorText: {
+        fontSize: 18,
+        color: 'red',
+    },
 });
+
+
+export default FeedBlocks;

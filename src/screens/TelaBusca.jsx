@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
-import { View, TextInput, FlatList, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, FlatList, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import CardBlock from '../components/CardBlock';
 
 export function TelaBusca({ quadras = [] }) {
     const [query, setQuery] = useState('');
     const [filteredQuadras, setFilteredQuadras] = useState([]);
     const [recentSearches, setRecentSearches] = useState([]);
 
+
+    //integrar com o endpoint de buscar quadras e depois remover o dados estatico da tela de navegação
+
     const handleSearch = () => {
         if (query) {
             const filteredData = quadras.filter(item => item.nome.toLowerCase().includes(query.toLowerCase()));
             setFilteredQuadras(filteredData);
 
-            // Salva a busca recente
             setRecentSearches(prevSearches => {
                 const updatedSearches = [query, ...prevSearches.filter(search => search !== query)];
-                return updatedSearches.slice(0, 5); // Limita a 5 buscas recentes
+                return updatedSearches.slice(0, 5);
             });
         } else {
             setFilteredQuadras([]);
@@ -29,7 +30,14 @@ export function TelaBusca({ quadras = [] }) {
     };
 
     const renderQuadra = ({ item }) => (
-        <CardBlock infoBlocks={item} />
+        <View style={styles.card}>
+            <Image source={item.image} style={styles.image} />
+            <View style={styles.cardContent}>
+                <Text style={styles.quadraNome}>{item.nome}</Text>
+                <Text style={styles.quadraEndereco}>{item.endereco}</Text>
+                <Text style={styles.quadraPreco}>R${item.preco}</Text>
+            </View>
+        </View>
     );
 
     const renderRecentSearch = ({ item }) => (
@@ -113,4 +121,38 @@ const styles = StyleSheet.create({
     resultsList: {
         marginTop: 10,
     },
+    card: {
+        flexDirection: 'row',
+        marginBottom: 10,
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        overflow: 'hidden',
+    },
+    image: {
+        width: 100,
+        height: 100,
+        resizeMode: 'cover',
+    },
+    cardContent: {
+        flex: 1,
+        padding: 10,
+    },
+    quadraNome: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    quadraEndereco: {
+        fontSize: 14,
+        color: '#666',
+    },
+    quadraPreco: {
+        fontSize: 14,
+        color: 'green',
+        fontWeight: 'bold',
+        marginTop: 5,
+    },
 });
+
+export default TelaBusca;

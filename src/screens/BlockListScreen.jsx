@@ -1,4 +1,4 @@
-import { FeedBlocks } from '../components/FeedBlocks'
+import  FeedBlocks  from '../components/FeedBlocks'
 
 
 export const BlockListScreen = () => {
