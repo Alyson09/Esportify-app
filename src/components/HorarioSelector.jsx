@@ -91,8 +91,6 @@ const styles = StyleSheet.create({
         margin: 10,
         padding: 15,
         backgroundColor: 'white',
-        borderRadius: 6,
-        borderWidth: 2,
     },
     content: {
         marginTop: 8,
