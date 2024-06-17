@@ -1,10 +1,11 @@
 {
   "expo": {
-    "name": "NomeDoSeuApp",
-    "slug": "nome-do-seu-app",
+    "name": "Esportify",
+    "slug": "Esportify",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -27,6 +28,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "80b0190d-b766-4233-b6e2-4a60cd6bb7ac"
+      }
     }
   }
 }

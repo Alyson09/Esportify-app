@@ -29,11 +29,11 @@ export function BlocksDetailScreen() {
 
     const getDayOfWeek = (dateString) => {
         const date = new Date(dateString);
-        const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+        const days = [ 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado','Domingo'];
         return days[date.getDay()];
     };
 
-    const handleDateSelect = (day) => {
+    const handleDateSelect = (day) => { 
         setSelectedDate(day.dateString);
         setShowCalendar(false);
     };
@@ -77,7 +77,6 @@ export function BlocksDetailScreen() {
                 )}
                 {dayInfo.length > 0 ? (
                     <HorarioSelector
-                        dia={getDayOfWeek(selectedDate)}
                         horarios={dayInfo}
                     />
                 ) : (

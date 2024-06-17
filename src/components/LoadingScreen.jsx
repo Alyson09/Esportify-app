@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Video from 'react-native-video';
 
@@ -6,7 +6,7 @@ const LoadingScreen = ({ onLoadingEnd }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onLoadingEnd();
-    }, 3000);
+    }, 8000);
 
     return () => clearTimeout(timer);
   }, [onLoadingEnd]);
@@ -14,11 +14,10 @@ const LoadingScreen = ({ onLoadingEnd }) => {
   return (
     <View style={styles.container}>
       <Video
-        source={require('../data/IMG/intro.mp4')}
+        source={require('../data/IMG/intro.mp4')} 
         style={styles.backgroundVideo}
         resizeMode="cover"
         onEnd={onLoadingEnd}
-        repeat
       />
     </View>
   );

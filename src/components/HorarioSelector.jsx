@@ -1,19 +1,12 @@
 import React, { useState } from "react";
 import { Animated, StyleSheet, Text, View, Pressable } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
 import GetToken from '../components/GetToken';
 import axios from 'axios';
 
-function formatTime(timeString) {
-    const date = new Date(timeString);
-    return `${date.getUTCHours()}:${date.getUTCMinutes().toString().padStart(2, '0')}`;
-}
-
-function HorarioSelector({ dia, horarios }) {
-    const [opened, setOpened] = useState(false);
-    const [animation] = useState(new Animated.Value(0));
+function HorarioSelector({ horarios }) {
+    const [opened, setOpened] = useState(true);
     const [solicitados, setSolicitados] = useState(new Set());
-    
+
     const handleSolicitar = async (idHorario, idQuadra) => {
         try {
             const token = await GetToken();
@@ -68,35 +61,13 @@ function HorarioSelector({ dia, horarios }) {
         }
     };
 
-    function toggleAccordion() {
-        const toValue = opened ? 0 : 1;
-        Animated.timing(animation, {
-            toValue,
-            duration: 300,
-            useNativeDriver: false,
-        }).start();
-        setOpened(!opened);
-    }
-
-    const heightAnimationInterpolation = animation.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, horarios.length * 40],
-    });
-
     return (
         <View style={styles.container}>
-            <Pressable onPress={toggleAccordion}>
-                <View style={styles.header}>
-                    <Text style={styles.details}>{dia}</Text>
-                    <AntDesign name={opened ? 'caretup' : 'caretdown'} size={16} />
-                </View>
-            </Pressable>
-
-            <Animated.View style={[styles.content, { height: heightAnimationInterpolation }]}>
-                {opened && horarios.map((horario, index) => (
+            <Animated.View style={styles.content}>
+                {horarios.map((horario, index) => (
                     <View key={index} style={styles.timeContainer}>
                         <Text style={styles.details}>
-                            {formatTime(horario.horario_inicial)} a {formatTime(horario.horario_final)}
+                            {horario.horario}
                         </Text>
                         <Pressable
                             style={[
@@ -123,10 +94,6 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         borderWidth: 2,
     },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
     content: {
         marginTop: 8,
         overflow: 'hidden',
@@ -143,18 +110,16 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     button: {
-        borderRadius: 3,
-        backgroundColor: '#24f024',
-        paddingHorizontal: 10,
-        paddingVertical: 6,
+        padding: 10,
+        backgroundColor: '#006437',
+        borderRadius: 5,
     },
     buttonCancel: {
         backgroundColor: 'red',
     },
     buttonText: {
-        color: 'black',
-        fontWeight: 'bold',
-    }
+        color: 'white',
+    },
 });
 
 export default HorarioSelector;
