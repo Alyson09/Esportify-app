@@ -30,8 +30,7 @@ const FeedBlocks = () => {
                     Authorization: `${token}`
                 }
             });
-            setBlocks(response.data.courts);
-            console.log(blocks)
+            setBlocks(response.data.courts)
         } catch (error) {
             console.error('Erro ao realizar a solicitação:', error);
             setError('Erro ao realizar a solicitação');

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, TextInput, FlatList, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import axios from 'axios'
+import GetToken from '../components/GetToken';
 
 export function TelaBusca({ quadras = [] }) {
     const [query, setQuery] = useState('');
@@ -10,18 +12,17 @@ export function TelaBusca({ quadras = [] }) {
 
     //integrar com o endpoint de buscar quadras e depois remover o dados estatico da tela de navegação
 
-    const handleSearch = () => {
-        if (query) {
-            const filteredData = quadras.filter(item => item.nome.toLowerCase().includes(query.toLowerCase()));
-            setFilteredQuadras(filteredData);
+    const handleSearch = async () => {
+      const token = await GetToken();
 
-            setRecentSearches(prevSearches => {
-                const updatedSearches = [query, ...prevSearches.filter(search => search !== query)];
-                return updatedSearches.slice(0, 5);
-            });
-        } else {
-            setFilteredQuadras([]);
-        }
+      if(query){
+        const response = await axios.get(`https://espority-backend.onrender.com/quadra/?nome=${query}`, {
+          headers: {
+            Authorization: token
+          }
+        })
+        setFilteredQuadras(response.data.courts)
+      }
     };
 
     const handleRecentSearchPress = (text) => {
@@ -34,8 +35,12 @@ export function TelaBusca({ quadras = [] }) {
             <Image source={item.image} style={styles.image} />
             <View style={styles.cardContent}>
                 <Text style={styles.quadraNome}>{item.nome}</Text>
-                <Text style={styles.quadraEndereco}>{item.endereco}</Text>
-                <Text style={styles.quadraPreco}>R${item.preco}</Text>
+                <Text style={styles.complexoNome}>{item.complexo_esportivo.nome}</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.quadraEndereco}>{item.complexo_esportivo.rua} - </Text>
+                  <Text style={styles.quadraEndereco}>{item.complexo_esportivo.bairro}</Text>
+                </View>
+                <Text style={styles.quadraEndereco}>{item.complexo_esportivo.cidade}</Text>
             </View>
         </View>
     );
@@ -140,8 +145,12 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     quadraNome: {
-        fontSize: 16,
+        fontSize: 20,
         fontWeight: 'bold',
+    },
+    complexoNome: {
+      fontSize: 16,
+      fontWeight: 'bold',
     },
     quadraEndereco: {
         fontSize: 14,

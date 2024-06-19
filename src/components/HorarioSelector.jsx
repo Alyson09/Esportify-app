@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Animated, StyleSheet, Text, View, Pressable } from "react-native";
 import GetToken from '../components/GetToken';
 import axios from 'axios';
+import { socket } from '../services/socket';
 
-function HorarioSelector({ horarios }) {
+function HorarioSelector({ times, dayOfWeek, selectedDate  }) {
     const [opened, setOpened] = useState(true);
     const [solicitados, setSolicitados] = useState(new Set());
+    const [socketInstance] = useState(socket())
+
+    useEffect(() => {
+      socketInstance.on('rent', () => {
+        
+      })
+  
+      return () => {
+        socketInstance.off('rent')
+      }
+    }, [])
 
     const handleSolicitar = async (idHorario, idQuadra) => {
         try {
@@ -64,10 +76,16 @@ function HorarioSelector({ horarios }) {
     return (
         <View style={styles.container}>
             <Animated.View style={styles.content}>
-                {horarios.map((horario, index) => (
+                {times.map((horario, index) => (
                     <View key={index} style={styles.timeContainer}>
                         <Text style={styles.details}>
-                            {horario.horario}
+                            {horario.horario_inicial} - 
+                        </Text>
+                        <Text style={styles.details}>
+                            {horario.horario_final}
+                        </Text>
+                        <Text style={styles.details}>
+                            {horario.preco}
                         </Text>
                         <Pressable
                             style={[

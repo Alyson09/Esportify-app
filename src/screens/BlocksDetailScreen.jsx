@@ -3,54 +3,45 @@ import { ScrollView, View, Text, Image, StyleSheet, Pressable, Animated } from '
 import HorarioSelector from '../components/HorarioSelector';
 import { Calendar } from 'react-native-calendars';
 import { FontAwesome } from '@expo/vector-icons';
-
+import axios from 'axios'
+import GetToken from '../components/GetToken';
+import { getDayOfWeek } from '../Utils/getDayOfWeek'
 
 //fazer integração com o endpoint de horários disponiveis, o componente de solicitar é montado na tela horarioselector
 
-export function BlocksDetailScreen() {
+export function BlocksDetailScreen({ route }) {
     const [dayInfo, setDayInfo] = useState([]);
     const [selectedDate, setSelectedDate] = useState('');
     const [showCalendar, setShowCalendar] = useState(false);
+    const [times, setTimes] = useState([])
+    const [dayOfWeek, setDayOfWeek] = useState('')
+    const infosSelectedBlock = route.params.infoBlocks
 
+    
     useEffect(() => {
-        if (selectedDate) {
-            fetchBlocks();
-        }
+      if (selectedDate) {
+        fetchBlocks();
+      }
+
     }, [selectedDate]);
 
-    const fetchBlocks = () => {
-        const staticData = [
-            { dia_semana: 'Segunda', horario: '08:00' },
-            { dia_semana: 'Segunda', horario: '10:00' },
-            { dia_semana: 'Terça', horario: '12:00' },
-            { dia_semana: 'Terça', horario: '14:00' },
-            { dia_semana: 'Quarta', horario: '16:00' },
-        ];
-        const dayOfWeek = getDayOfWeek(selectedDate);
-        const filteredData = staticData.filter(item => item.dia_semana === dayOfWeek);
-        setDayInfo(filteredData);
-    };
+    const fetchBlocks = async () => {
+      const token = await GetToken();
 
-    const getDayOfWeek = (dateString) => {
-        const date = new Date(dateString);
-        const days = [ 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
-        return days[date.getDay()];
+      const response = await axios.get(`https://espority-backend.onrender.com/quadra/horarios/${infosSelectedBlock.id}`, {
+        headers: {
+          Authorization: token,
+        }
+      })
+
+      setTimes(response.data.times)
     };
 
     const handleDateSelect = (day) => { 
         setSelectedDate(day.dateString);
+        const dayOfTheWeek = getDayOfWeek(day.dateString)
+        setDayOfWeek(dayOfTheWeek)
         setShowCalendar(false);
-    };
-
-    const infoBlocks = {
-        nome: 'Quadra do seu zé',
-        complexo_esportivo: {
-            rua: 'Rua Davia Bertona',
-            numero: 10,
-            bairro: 'Recanto Verde',
-            cidade: 'Muriaé',
-            estado: 'MG'
-        },
     };
 
     return (
@@ -61,10 +52,10 @@ export function BlocksDetailScreen() {
             />
             <View style={styles.headerContainer}>
                 <View style={styles.textContainer}>
-                    <Text style={styles.textTitle}>{infoBlocks.nome}</Text>
+                    <Text style={styles.textTitle}>{infosSelectedBlock.nome}</Text>
                     <Text style={styles.textSubtitle}>
-                        {infoBlocks.complexo_esportivo.rua}, N° {infoBlocks.complexo_esportivo.numero}
-                        {'\n'}{infoBlocks.complexo_esportivo.bairro}, {infoBlocks.complexo_esportivo.cidade} - {infoBlocks.complexo_esportivo.estado}
+                        {infosSelectedBlock.complexo_esportivo.rua}, N° {infosSelectedBlock.complexo_esportivo.numero}
+                        {'\n'}{infosSelectedBlock.complexo_esportivo.bairro}, {infosSelectedBlock.complexo_esportivo.cidade} - {infosSelectedBlock.complexo_esportivo.estado}
                     </Text>
                 </View>
                 <View style={styles.datePickerContainer}>
@@ -84,9 +75,11 @@ export function BlocksDetailScreen() {
                         style={styles.calendar}
                     />
                 )}
-                {dayInfo.length > 0 ? (
+                {dayOfWeek ? (
                     <HorarioSelector
-                        horarios={dayInfo}
+                        dayOfTheWeek={dayOfWeek}
+                        times={times}
+                        date={selectedDate}
                     />
                 ) : (
                     <>
